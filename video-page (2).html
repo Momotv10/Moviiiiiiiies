@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <title>مشغل الفيديو</title>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css?family=Cairo&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/video.js/dist/video-js.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/video.js/dist/video.min.js"></script>
+  <style>
+    body {
+      font-family: 'Cairo', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 10px;
+    }
+
+    .video-js {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <video id="video-player" class="video-js vjs-default-skin" controls>
+        <!-- إضافة المصادر المختلفة لصيغ الفيديو -->
+        <source src="" type="video/mp4">
+        <source src="" type="application/x-mpegURL">
+        <source src="" type="video/x-matroska">
+        <source src="" type="video/webm">
+        <source src="" type="video/ogg">
+        <source src="" type="video/flv">
+        <!-- إضافة المزيد من صيغ الفيديو هنا -->
+    </video>
+  </div>
+  
+  <script>
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const videoLink = urlParams.get('videoLink');
+
+    const player = videojs('video-player');
+
+    if (videoLink) {
+      const sources = [
+        { src: decodeURIComponent(videoLink), type: 'video/mp4' },
+        { src: decodeURIComponent(videoLink), type: 'application/x-mpegURL' },
+        { src: decodeURIComponent(videoLink), type: 'video/x-matroska' },
+        { src: decodeURIComponent(videoLink), type: 'video/webm' },
+        { src: decodeURIComponent(videoLink), type: 'video/ogg' },
+        { src: decodeURIComponent(videoLink), type: 'video/flv' }
+        // يمكنك إضافة المزيد من صيغ الفيديو هنا
+      ];
+
+      player.src(sources);
+
+      player.ready(function() {
+        // تأخير تشغيل الفيديو حتى يقوم المستخدم بالتفاعل مع الصفحة
+        document.body.addEventListener('click', function() {
+          this.removeEventListener('click', arguments.callee);
+          player.play();
+        });
+      });
+    }
+  </script>
+</body>
+</html>
